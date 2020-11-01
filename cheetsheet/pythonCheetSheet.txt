@@ -1,1 +1,429 @@
+# get the path
+path = os.path.abspath(os.getcwd())
 
+# Calculate the year in which there was maximum enrollment of women in Computer Science: yr_max
+yr_max = year[computer_science.argmax()]
+
+# calculating pdf - probability density function
+# x = np.linspace(-7, 7, 200)
+# y = stats.norm( mu, sd). pdf( x)
+
+# create a subplot with many different plots
+mu_params = []
+sd_params = []
+x = np.linspace(-7, 7, 200)
+
+mu_params = [-1, 0, 1]
+sd_params = [0.5, 1, 1.5]
+x = np.linspace(-7, 7, 200)
+_, ax = plt.subplots(len(mu_params), len(sd_params), sharex=True, sharey=True,
+                     figsize=(9, 7), constrained_layout=True)
+for i in range(3):
+    for j in range(3):
+        mu = mu_params[i]
+        sd = sd_params[j]
+        y = stats.norm(mu, sd).pdf(x)
+        ax[i,j].plot(x, y)
+        ax[i,j].plot([], label="µ = {:3.2f}\n? = {:3.2f}".format(mu, sd), alpha=0)
+        ax[i,j].legend(loc=1)
+ax[2,1].set_xlabel('x')
+ax[1,0].set_ylabel('p(x)', rotation=0, labelpad=20)
+ax[1,0].set_yticks([])
+plt.savefig('figures/ch1_ex1.png', dpi=300);
+
+# create a submission file for kaggle
+my_submission = pd.DataFrame({'Id': test.Id, 'SalePrice': predicted_prices})
+# you could use any filename. We choose submission here
+my_submission.to_csv('submission.csv', index=False)
+
+# transform date to y-m-d format
+df['date'] = pd.to_datetime(df['date']).dt.strftime('%Y-%m-%d')
+
+# Provide the correct format for the date
+date_data_one = pd.to_datetime(date_data_one, format="%A %B %d, %Y")
+
+# rename columns
+df = df.rename(columns={'old_column':'new_column'})
+
+# count different values
+df['column'].value_counts()
+
+# get statistics
+df.agg(['mean','std']).round(0)
+
+# distribution (rate of) of yes/no
+df.groupby(['Churn']).size() / df.shape[0] * 100
+
+# random split of a df
+mask = np.random.rand(len(df)) < 0.8
+train = df[mask]
+test = df[~mask]
+
+
+# split date to year, month, day
+my_df['Year']=pd.to_datetime(my_df['Date Week Ending']).dt.year
+my_df['Month']=pd.to_datetime(my_df['Date Week Ending']).dt.month
+my_df['Day']=pd.to_datetime(my_df['Date Week Ending']).dt.day
+
+# unzip 7z file
+archive = py7zr.SevenZipFile(file1, mode='r')
+archive.extractall(path=path)
+archive.close()
+
+# extract month and year from date string
+online['YearMonth']=pd.to_datetime(online['date']).dt.to_period('M')
+
+# list function definition
+import inspect
+inspect.getsource(function_name)
+
+# datetime64 required for time series analysis 
+df['date_column'] = pd.to_datetime(df['date_column'])
+
+# columnwise multiplication of df with pd.Series
+new_df=df.mul(series.values,axis=1)
+
+# display float format
+pd.options.display.float_format = '{:,.2f}'.format
+
+# read a csv file as a series 1 column and 1 index column
+series = pd.read_csv(file18, header=None, squeeze=True, index_col=0)
+
+# Import and inspect ozone data here
+data = pd.read_csv(file18, names = ['date', 'value'],parse_dates=[0], index_col=[0]).dropna()
+
+# read as date and set a DateTimeIndex for an original date column as string
+df = pd.read_csv('file.csv',parse_dates=['date'], index_col='date')
+
+#Change the index to the intraday times
+intraday.index = pd.date_range(start='2017-09-01 9:30', end='2017-09-01 16:00', freq='1min')
+
+# changing 'Date' to datetime
+df = df.set_index('Date')
+df.index = pd.to_datetime(df.index)
+
+# joint distribution of a few pairs of columns from the df
+sns.pairplot(df[["num_col1", "num_col2", "num_col3", "num_col4"]], diag_kind="kde")
+
+# split dataset to train and test
+train_dataset = dataset.sample(frac=0.8,random_state=0)
+test_dataset = dataset.drop(train_dataset.index)
+
+# make one-hot encoder from categorical variables 
+dataset['Origin'] = dataset['Origin'].map(lambda x: {1: 'USA', 2: 'Europe', 3: 'Japan'}.get(x))
+dataset = pd.get_dummies(dataset, prefix='', prefix_sep='')
+
+# count the null values
+dataset.isna().sum()
+
+# shallow copy of a dictionary, no change of initial dict
+mydict_updated = dict.copy(my_dict)
+
+# use spaces as delimiter in read_csv
+df = pd.read_csv(file, skipinitialspace=True, delim_whitespace=True)
+
+# print df in iPython shell without index
+print(data.to_string(columns=['var1', 'var2', 'var3'], index=False))
+
+# Create new column NewColumn by assigning values to it
+df = df.assign(NewColumn=values)
+
+# transform string to datetime
+df['columnDate'] = pd.to_datetime(df['columnDate'])
+
+# groupby and update with a specific summary
+# Group by CustomerID and select the InvoiceDay value
+grouping = online.groupby('CustomerID')['InvoiceDay'] 
+# Assign a minimum InvoiceDay value to the dataset
+online['CohortDay'] = grouping.transform('min')
+
+
+# Define a function that will parse the date and return year, month, day
+def get_day(x): return dt.datetime(x.year, x.month, x.day)
+
+# encode Yes/No to 1/0
+from sklearn.preprocessing import LabelEncoder
+lb = LabelEncoder() 
+sampleDF['housing'] = lb.fit_transform(sampleDF['housing'])
+
+# Print the unique Churn values
+print(set(df['Churn']))
+
+# replace categorical variables to numeric ones in a df
+gender = {'male': 1,'female': 0}
+telco_numeric.Gender = [gender[item] for item in telco_numeric.Gender]
+
+# replace missing values (" ") with 0 for numeric values
+df['column'] = pd.to_numeric(df['column'], errors='coerce').fillna(0, downcast='infer')
+
+# ignore warnings
+import warnings
+warnings.filterwarnings('ignore')
+	
+# Print the data types of telco_raw dataset
+print(telco_raw.dtypes)
+
+# Print the header of telco_raw dataset
+print(telco_raw.head())
+
+# Print the number of unique values in each telco_raw column
+print(telco_raw.nunique())
+
+# subset df by columns numbers
+df.iloc[:,0:10]
+
+# merge dataframes side by side
+pd.concat([df1, df2], axis=1)
+
+# all columns expect one 
+df.loc[:, df.columns != 'b']
+
+# create numeric and categorical columns
+numeric_cols = df.select_dtypes(include=[np.number])
+categoric_cols = df.select_dtypes(exclude=[np.number])
+
+numeric_cols = loan_data.select_dtypes(include=[np.number])
+categoric_cols = loan_data.select_dtypes(include=['object'])
+
+# replace all whitespaces in a df column
+df['column'] = df[['column']].apply(lambda x: re.sub(r'\s+', '', ''.join(x)), axis=1)
+
+'''
+DataCamp non exixting df problem
+Solution: print all rows in iPython shell
+read the csv file 
+for each row check for strings to concatenate and replace with new string
+pandas csv to df
+concatenate columns using lambda
+''' 
+    
+dffile = path+'/loan_data_copied.csv'
+out_filename = path+'/loan_data_output1.csv'
+strings = ['Own','Home']
+newstrings = 'OwnHome'
+
+with open(dffile, 'r') as file, open(out_filename, 'w', newline='') as out_file:
+        reader = csv.reader(file, delimiter = ' ', skipinitialspace=True)
+        writer = csv.writer(out_file)
+        # join row in string and look for a substring
+        for row in reader:
+           if ','.join(strings) in ','.join(row):
+             # replace a substring with a new substring
+             rowtostring = ','.join(row).replace(','.join(strings), newstrings) 
+             writer.writerow(rowtostring.split(','))
+           else:
+             writer.writerow(row)
+            
+loan_data = pd.read_csv(out_filename, skiprows=1, names= ['Id', 'Term', 'Term1', 'Home_Ownership', 'Purpose', 'Credit_Score',
+       'Annual_Income', 'Loan_Status', 'Loan_Status1'])  
+
+loan_data['Term'] = loan_data[['Term', 'Term1']].apply(lambda x: ''.join(x), axis=1)
+loan_data['Loan_Status'] = loan_data[['Loan_Status', 'Loan_Status1']].apply(lambda x: ''.join(x), axis=1)
+loan_data = loan_data[['Term', 'Home_Ownership', 'Purpose', 'Credit_Score', 'Annual_Income', 'Loan_Status']]
+print(loan_data.head())
+
+
+
+#print all rows in ipython shell 
+pd.set_option('display.max_rows', None)
+
+#print(results) of an sql statement in df
+results = connection.execute(stmt).fetchall()
+df = pd.DataFrame(results)
+df.columns = results[0].keys()
+
+#comparing date columns
+df['date_sale_initiated'] = pd.to_datetime(df80_2['date_sale_initiated'])
+df80_2['today'] = pd.to_datetime(df80_2['today'])
+df80_2['date_min'] = df80_2[['date_sale_initiated','today']].min(axis=1)
+df['col2'] = df[['col1','col2']].min(axis=1)
+
+# convert list to integer
+def convert(list): 
+    """convert list to an integer"""  
+    # Converting integer list to string list 
+    s = [str(i) for i in list] 
+      
+    # Join list items using join() 
+    res = int("".join(s)) 
+      
+    return(res) 
+	
+# pandas apply to a column using additional arguments 
+def func_subregions(key, mydict):
+    return mydict.get(key)
+df1['subregion_name'] = df1['city_name'].apply(func_subregions, mydict=dictionary)
+
+# transform a df listcolumn to a string
+df1['column'] = df1['column'].apply(', '.join)
+
+# create a column conditionally in pandas by apply lambda to an existing columns
+df = pd.DataFrame({"radon": [0.5, 0.6, 0.5, 2, 4, 13]})
+df["radon_adj"] = df["radon"].where(df["radon"] != 0.5, np.random.uniform(0.1, 0.5, len(df)))
+df['radon_adj'] = df['radon'].apply(lambda x: random.choices(hungarian_cities, k=1) if x == 0.5 else x)
+
+# conditionally setting a value to a column
+df.loc[df['country'] == 'Germany', ['city_name']] = random.choices(hungarian_cities)
+
+# uninstall pyYAML error workaround
+remove PyYAML from ../anaconda/Lib/site-packages/..
+
+# set an attribute of an edge in networkx: 
+network_name.edges[node1, node2]['attribute'] = value
+
+# general receipe for list comprehensions 
+[ output expression for iterator variable in iterable if predicate expression ]
+
+# Split sentence into list of lower case words (? 1 line)
+words = (sentence.lower()).split()
+words = [word.lower() for word in sentence.split()]
+	
+# ? TO DO ::Sample a sequence of characters according to a sequence of probability distributions
+np.random.seed(0)
+p = np.array([0.1, 0.0, 0.7, 0.2])
+index = np.random.choice([0, 1, 2, 3], p = p.ravel())
+
+
+# assign index to characters and vice-versa
+char_to_ix = { ch:i for i,ch in enumerate(sorted(chars)) }
+ix_to_char = { i:ch for i,ch in enumerate(sorted(chars)) }
+
+# Construct arrays of data containing predefined nr of True and False values
+np_array = np.array([True] * 153 + [False] * 91)
+
+# nr of True-s in an np boolean array 
+np.sum(dems)
+
+# unique values of a column
+df['column'].unique()
+
+# confidence intervals
+np.percentile(bs_replicates, [2.5, 97.5])
+
+# Compute SEM - standard error of the mean
+sem = np.std(data) / np.sqrt(len(data))
+
+# read one column files using whitespace delim
+df = pd.read_csv(file, delim_whitespace=True)
+
+# split pandas column using regexp, nr of new columns should match split result
+df[['new_col1','new_col2','new_col3']] = df.column.str.split('[:.]', expand=True)
+
+# convert pandas object column to datetime
+raw_data['Mycol'] =  pd.to_datetime(raw_data['Mycol'], format='%d%b%Y:%H:%M:%S.%f') 
+
+# custom module not found in Jupyter Notebook in PyCharm
+Set working directory in PyCharm Run/Configurations
+
+# encoding and indexing steps: read from csv, write back and read again
+df = pd.read_csv(file)
+df.to_csv('my.csv', encoding='utf-8', index=False)
+df_again = pd.read_csv('my.csv', index_col='col_name')
+
+# define ColumnDataSource
+source = ColumnDataSource(
+    data=dict(
+        x=[1, 2, 3, 4, 5],
+        y=[2, 5, 8, 2, 7],
+        desc=['A', 'b', 'C', 'd', 'E'],
+    )
+)
+
+# find max for variable 'x' from 'source'
+print( max( source.data['x'] ))
+
+# flattening back after grouping
+by_year_col = df[['year','col']].groupby('year').mean().reset_index()
+
+# check if items can be converted to float
+def isfloat(value):
+  try:
+    float(value)
+    return True
+  except ValueError:
+    return False
+# convert list items to float if possible
+mylist = [float(item) for item in mylist if isfloat(item)]
+
+# creating time series from a pandas series
+s = pd.Series(df.a)
+s.index = df.date
+
+# subsetting a df by filtering columns on a regex pattern
+pattern = re.compile('18\d{2}')
+df_filtered = df.filter(regex=pattern)
+
+#load predictors and target into a numpy array from a csv
+df = pd.read_csv("data/file.csv")
+predictors_df = df.drop(['target'], axis=1)
+predictors = np.array(predictors_df)
+target_df = df[['target']]
+
+# load predictors as matrix and target as categorical
+df = pd.read_csv('file.csv')
+predictors = df.drop(['shot_result'], axis=1).as_matrix()
+target = to_categorical(df.target)
+
+
+# load csv into a 2D numpy array
+2D_nparray = numpy.loadtxt(open("data.csv", "rb"), delimiter=",", skiprows=1)
+
+# scale a df
+df[df.columns] = scaler.fit_transform(df[df.columns])
+
+# select all the columns except the first one
+df = df.loc[:,1:]
+
+# Create a DataFrame with column1 and column2 as columns: df
+df = pd.DataFrame({'column1': column1_list, 'column2': column2_list})
+
+# use only numeric predictors. 
+df_numeric_predictors = df_predictors.select_dtypes(exclude=['object'])
+
+# DEALING WITH MISSING VALUES (3 strategies)
+# counting the missing values
+missing_val_count_by_column = (data.isnull().sum())
+print(missing_val_count_by_column[missing_val_count_by_column > 0
+
+# drop columns with missing values
+data_without_missing_values = original_data.dropna(axis=1)
+
+# In many cases, you'll have both a training dataset and a test dataset.
+# You will want to drop the same columns in both DataFrames. In that case, you would write
+
+cols_with_missing = [col for col in original_data.columns
+                                 if original_data[col].isnull().any()]
+redued_original_data = original_data.drop(cols_with_missing, axis=1)
+reduced_test_data = test_data.drop(cols_with_missing, axis=1)
+
+# imputation with mean
+from sklearn.impute import SimpleImputer
+my_imputer = SimpleImputer()
+data_with_imputed_values = my_imputer.fit_transform(original_data)
+
+# extension of the imputation by adding new columns indicating nans'
+
+# make copy to avoid changing original data (when Imputing)
+new_data = original_data.copy()
+
+# make new columns indicating what will be imputed
+cols_with_missing = (col for col in new_data.columns
+                                 if new_data[col].isnull().any())
+for col in cols_with_missing:
+    new_data[col + '_was_missing'] = new_data[col].isnull()
+
+# Imputation
+my_imputer = SimpleImputer()
+new_data = pd.DataFrame(my_imputer.fit_transform(new_data))
+new_data.columns = original_data.columns
+'''
+
+# list all the imports
+import types
+... def imports():
+...     for name, val in globals().items():
+...         if isinstance(val, types.ModuleType):
+...             yield val.__name__
+
+In [4]: list(imports())
+Out[4]: ['builtins', 'IPython.core.shadowns', 'builtins', 'types']
