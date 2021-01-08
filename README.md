@@ -1,2 +1,2 @@
 # share_notebooks
-Repository to share idata science topics
+Repository to share data science topics
