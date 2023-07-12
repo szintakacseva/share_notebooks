@@ -1,3 +1,88 @@
+# feature enginieering for timeseries with example call data X_train, y_train = create_features(pjme_train, target='PJME_MW')
+
+def create_features(df, target=None):
+    """
+    Creates time series features from datetime index
+    """
+    df['date'] = df.index
+    df['hour'] = df['date'].dt.hour
+    df['dayofweek'] = df['date'].dt.dayofweek
+    df['quarter'] = df['date'].dt.quarter
+    df['month'] = df['date'].dt.month
+    df['year'] = df['date'].dt.year
+    df['dayofyear'] = df['date'].dt.dayofyear
+    df['dayofmonth'] = df['date'].dt.day
+    df['weekofyear'] = df['date'].dt.weekofyear
+    
+    X = df[['hour','dayofweek','quarter','month','year',
+           'dayofyear','dayofmonth','weekofyear']]
+    if target:
+        y = df[target]
+        return X, y
+    return X
+# outlier report with example call -- outlier_report(ccm,vars_to_check,thres=4)
+
+def outlier_report(df,vars_to_examine=None,color='red',thres=4,
+                   return_df=False,no_print=False):
+    '''
+    Parameters
+    ----------
+    df : DATAFRAME
+        Input dataframe
+    vars_to_examine : LIST, optional
+        List of variables to examine from dataframe. The default is df.columns.
+    color : STRING, optional
+        Color for cell highlighting. The default is 'red'.
+    thres : int, optional
+        Highlight cells where z score is above thres. The default is 4.
+    return_df : Boolean, optional
+        If true, will return the df obj (without styling) for further use. 
+        The default is False.
+    no_print : Boolean, optional
+        If true, will not print. 
+        The default is False.
+    
+    Displays (if no_print=False)
+    -------
+    Table with distribution of z-scores of variables of interest. 
+    
+    Returns (if return_df=True)
+    -------
+    Table with distribution of z-scores of variables of interest (without styling).     
+    '''
+        
+    def highlight_extreme(s):
+        '''
+        Highlight extreme values in a series.
+        '''
+        is_extreme = abs(s) > thres
+        return ['background-color: '+color if v else '' for v in is_extreme]
+    
+    if vars_to_examine==None:
+        vars_to_examine=df.columns
+    
+    _tab = (
+            # compute z scores
+            ((df[vars_to_examine] - df[vars_to_examine].mean())/df[vars_to_examine].std())
+            # output dist of z   
+            .describe(percentiles=[.01,.05,.25,.5,.75,.95,.99]).T
+            # add a new column = highest of min and max column
+            .assign(max_z_abs = lambda x: x[['min','max']].abs().max(axis=1))
+            # now sort on it
+            .sort_values('max_z_abs',ascending = False)
+    )
+    
+    if no_print == False:
+        display(_tab
+             .style.format('{:,.2f}')
+                   .format({"count": '{:,.0f}'})           
+                   .apply(highlight_extreme, 
+                          subset=['mean', 'std', 'min', '1%', '5%', '25%', '50%', '75%', '95%','99%', 'max', 'max_z_abs'])
+        ) 
+    
+    if return_df == True:
+        return _tab
+    
 # Print missing and unique values in tabular format
 from tabulate import tabulate
 def tab_data(df):
@@ -69,7 +154,7 @@ def interactive_segment_numeric_by_categoricals(df):
     )
 
     numeric = widgets.Dropdown(
-        options=df.select_dtypes(include='float64').columns.values,
+        options=df.select_dtypes(include !='object').columns.values,
         description='Numerics:',
         disabled=False,
     )
